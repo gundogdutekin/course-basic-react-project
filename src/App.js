@@ -7,7 +7,6 @@ import Loading from './Loading';
 function App() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true)
-  const [afterdelete, setAfterdelete] = useState(false)
   const fetchCourses = async () => {
     setLoading(true);
     try {
@@ -19,12 +18,9 @@ function App() {
     }
    
   }
-  const setCourse=async()=>{
-    setAfterdelete(false);
-    fetchCourses();
-  }
+ 
   const removeOnedelete = (id) => {
-    setAfterdelete(true);
+    
     const newCourses = courses.filter((course) => course.id !== id);
     setCourses(newCourses);
   }
@@ -34,14 +30,13 @@ function App() {
   return (
     <div className="App">
       <h1>Kurslarım</h1>
-      {
-        afterdelete ? (<div><button className='button' onClick={setCourse}>Güncelle</button></div>):null
-      }
+     
       
       {loading ? 
         (<Loading/>
-        ): (
-        <Courses afterdelete={afterdelete} removeOnedelete={removeOnedelete} setCourse={setCourse} courses={courses}/>
+        ): ( 
+        courses.length===0 ? (<div><h2>Hiç Kursunuz Kalmadı</h2><button className='button' onClick={fetchCourses}>Güncelle</button></div>):
+        <Courses  removeOnedelete={removeOnedelete} courses={courses}/>
       )}
      
     </div>
